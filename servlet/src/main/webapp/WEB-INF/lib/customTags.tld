@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+	version="2.1">
+
+	<description>JSTL 1.1 core library</description>
+	<display-name>JSTL core</display-name>
+	<tlib-version>1.1</tlib-version>
+	<short-name>customTags</short-name>
+
+	<tag>
+		<description>If condition</description>
+		<name>if</name>
+		<tag-class>com.mitrais.tags.If</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>test</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
+		<description>Then (condition after if)</description>
+		<name>then</name>
+		<tag-class>com.mitrais.tags.Then</tag-class>
+		<body-content>scriptless</body-content>
+	</tag>
+
+	<tag>
+		<description>Else (another condition after if-then)</description>
+		<name>else</name>
+		<tag-class>com.mitrais.tags.Else</tag-class>
+		<body-content>scriptless</body-content>
+	</tag>
+	
+	<tag>
+		<description>Lopping for collections</description>
+		<name>for</name>
+		<tag-class>com.mitrais.tags.For</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>items</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+		</attribute>
+	</tag>
+</taglib>
