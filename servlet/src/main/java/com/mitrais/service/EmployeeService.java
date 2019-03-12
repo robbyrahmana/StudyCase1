@@ -1,8 +1,6 @@
 package com.mitrais.service;
 
 import com.mitrais.bean.Employee;
-import com.mitrais.core.dao.DAO;
+import com.mitrais.core.service.BaseService;
 
-public interface EmployeeService extends DAO<Employee, Integer>{
-	boolean deleteAll();
-}
+public interface EmployeeService extends BaseService<Employee, Integer> {}

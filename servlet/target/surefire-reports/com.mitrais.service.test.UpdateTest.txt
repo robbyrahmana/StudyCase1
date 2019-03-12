@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: com.mitrais.service.test.UpdateTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.004 s <<< FAILURE! - in com.mitrais.service.test.UpdateTest
+initializationError(com.mitrais.service.test.UpdateTest)  Time elapsed: 0 s  <<< ERROR!
+java.lang.NoClassDefFoundError: LEmployeeDAO;
+Caused by: java.lang.ClassNotFoundException: EmployeeDAO
+

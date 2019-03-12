@@ -1,0 +1,4 @@
+0:0:0:0:0:0:0:1 - - [12/Mar/2019:12:06:50 +0700] "POST /servlet/employee HTTP/1.1" 200 3492 http-bio-8080-exec-1 1838
+0:0:0:0:0:0:0:1 - - [12/Mar/2019:12:06:57 +0700] "POST /servlet/employee HTTP/1.1" 500 7760 http-bio-8080-exec-3 280
+0:0:0:0:0:0:0:1 - - [12/Mar/2019:12:10:37 +0700] "GET /servlet/employee HTTP/1.1" 200 3189 http-bio-8080-exec-4 230
+0:0:0:0:0:0:0:1 - - [12/Mar/2019:12:10:39 +0700] "POST /servlet/employee HTTP/1.1" 500 4571 http-bio-8080-exec-6 412

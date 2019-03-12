@@ -1,137 +1,112 @@
 package com.mitrais.service.impl;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.mitrais.bean.Employee;
+import com.mitrais.core.container.DataContainer;
+import com.mitrais.core.controller.Action;
+import com.mitrais.dao.EmployeeDAO;
+import com.mitrais.dao.impl.EmployeeDAOImpl;
 import com.mitrais.service.EmployeeService;
 
 public class EmployeeServiceImpl implements EmployeeService {
+	
+	private final String pageList = "/employee/list";
+	private final String pageAdd = "/employee/add";
+	private final String pageModify = "/employee/modify";
+	
+	private static EmployeeServiceImpl instance;
+	
+	EmployeeDAO service = EmployeeDAOImpl.getInstance();
+	
+	private EmployeeServiceImpl() {}
 
-	private static EmployeeService instance;
-
-	private EmployeeServiceImpl() {
-	}
-
-	public static EmployeeService getInstance() {
+	public static EmployeeServiceImpl getInstance() {
 		if (instance == null) {
 			instance = new EmployeeServiceImpl();
 		}
 		return instance;
 	}
 
-	@Override
-	public List<Employee> findAll() {
-		List<Employee> data = new ArrayList<>();
-
-		PreparedStatement statement = getDataHandler().prepare("select * from employee");
-
-		try (ResultSet result = statement.executeQuery()) {
-			while (result.next()) {
-				Employee employee = new Employee();
-				employee.setId(result.getInt(1));
-				employee.setName(result.getString(2));
-				employee.setAddress(result.getString(3));
-				data.add(employee);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return data;
+	public DataContainer<Employee> getID(Integer id) {
+		DataContainer<Employee> dataContainer = new DataContainer<Employee>();
+		dataContainer.setData(service.getID(id));
+		dataContainer.setRedirectPage(pageModify);
+		return dataContainer;
 	}
 
-	@Override
-	public Employee getID(Integer id) {
-		Employee data = new Employee();
-		PreparedStatement statement = getDataHandler().prepare("select * from employee where id=?");
-		try {
-			statement.setInt(1, id);
-			ResultSet result = statement.executeQuery();
-			if (result.next()) {
-				data.setId(result.getInt(1));
-				data.setName(result.getString(2));
-				data.setAddress(result.getString(3));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return data;
+	public DataContainer<List<Employee>> findAll() {
+		DataContainer<List<Employee>> dataContainer = new DataContainer<List<Employee>>();
+		dataContainer.setData(service.findAll());
+		dataContainer.setRedirectPage(pageList);
+		return dataContainer;
 	}
 
-	@Override
-	public boolean save(Employee data) {
-		boolean status = false;
-
-		PreparedStatement statement = getDataHandler().prepare("insert into employee (name, address) values (?, ?)");
-		try {
-			statement.setString(1, data.getName());
-			statement.setString(2, data.getAddress());
-			int result = statement.executeUpdate();
-			if (result > 0) {
-				status = true;
+	public DataContainer<Employee> save(Employee data) {
+		System.out.println(data);
+		
+		DataContainer<Employee> dataContainer = new DataContainer<Employee>();
+		
+		if (data.getName() == null || data.getAddress() == null) {
+			dataContainer.setRedirectPage(pageAdd);
+		} else if (data.getName().equals("") || data.getAddress().equals("")) {
+			dataContainer.setMessage("Record is not complete!");
+			dataContainer.setData(data);
+			dataContainer.setStatus(false);
+			dataContainer.setRedirectPage(pageAdd);
+		} else {
+			boolean result = service.save(data);
+			if (result) {
+				dataContainer.setRedirectAction(Action.LIST.getName());
+			} else {
+				dataContainer.setMessage("Unable to insert record");
+				dataContainer.setData(data);
+				dataContainer.setStatus(false);
+				dataContainer.setRedirectPage(pageAdd);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
-
-		return status;
-	}
-
-	@Override
-	public boolean update(Employee data) {
-		boolean status = false;
-
-		PreparedStatement statement = getDataHandler().prepare("update employee set name=?, address=? where id=?");
-		try {
-			statement.setString(1, data.getName());
-			statement.setString(2, data.getAddress());
-			statement.setInt(3, data.getId());
-			int result = statement.executeUpdate();
-			if (result > 0) {
-				status = true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return status;
-	}
-
-	@Override
-	public boolean delete(Integer id) {
-		boolean status = false;
-
-		PreparedStatement statement = getDataHandler().prepare("delete FROM employee where id=?");
-		try {
-			statement.setInt(1, id);
-			int result = statement.executeUpdate();
-			if (result > 0) {
-				status = true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return status;
+		
+		return dataContainer;
 	}
 	
-	@Override
-	public boolean deleteAll() {
-		boolean status = false;
-
-		PreparedStatement statement = getDataHandler().prepare("TRUNCATE employee");
-		try {
-			int result = statement.executeUpdate();
-			status = true;
-		} catch (SQLException e) {
-			e.printStackTrace();
+	public DataContainer<Employee> update(Employee data) {
+		System.out.println(data);
+		
+		DataContainer<Employee> dataContainer = new DataContainer<Employee>();
+		
+		if (data.getName().equals("") || data.getAddress().equals("")) {
+			dataContainer.setMessage("Record is not complete!");
+			dataContainer.setStatus(false);
+			dataContainer.setData(data);
+			dataContainer.setRedirectPage(pageModify);
+		} else {
+			boolean result = service.update(data);
+			if (result) {
+				dataContainer.setRedirectAction(Action.LIST.getName());
+			} else {
+				dataContainer.setMessage("Unable to update record");
+				dataContainer.setStatus(false);
+				dataContainer.setData(data);
+				dataContainer.setRedirectPage(pageList);
+			}
 		}
-
-		return status;
+		
+		return dataContainer;
 	}
-
+	
+	public DataContainer<Employee> delete(Integer id) {
+		DataContainer<Employee> dataContainer = new DataContainer<Employee>();
+		
+		boolean status = service.delete(id);
+		if (status) {
+			dataContainer.setRedirectAction(Action.LIST.getName());
+		} else {
+			dataContainer.setMessage("Unable to delete record");
+			dataContainer.setStatus(false);
+			dataContainer.setRedirectAction(Action.LIST.getName());
+		}
+		
+		return dataContainer;
+	}
+		
 }

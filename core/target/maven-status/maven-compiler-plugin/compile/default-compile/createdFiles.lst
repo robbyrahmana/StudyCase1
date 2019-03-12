@@ -1,0 +1,9 @@
+com\mitrais\core\controller\ActionController.class
+com\mitrais\core\controller\Dispatcher.class
+com\mitrais\core\dao\DAO.class
+com\mitrais\core\service\BaseService.class
+com\mitrais\core\controller\CRUDController.class
+com\mitrais\core\datasource\DatabaseConnection.class
+com\mitrais\core\datasource\DatabaseHandler.class
+com\mitrais\core\helper\ReadPropertiesFiles.class
+com\mitrais\core\container\DataContainer.class

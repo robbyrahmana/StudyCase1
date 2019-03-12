@@ -13,17 +13,17 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.mitrais.bean.Employee;
-import com.mitrais.service.EmployeeService;
-import com.mitrais.service.impl.EmployeeServiceImpl;
+import com.mitrais.dao.EmployeeDAO;
+import com.mitrais.dao.impl.EmployeeDAOImpl;
 
 @RunWith(Parameterized.class)
 public class UpdateTest {
 	
-	private static EmployeeService service;
+	private static EmployeeDAO service;
 	
 	@BeforeClass
 	public static void getService() {
-		service = EmployeeServiceImpl.getInstance();
+		service = EmployeeDAOImpl.getInstance();
 	}
 	
 	@Parameter
@@ -36,7 +36,7 @@ public class UpdateTest {
 	public static Collection<Object[]> data() {
 		return Arrays.asList(new Object[][] {
 			{new Employee(2, "Robby22222", "Pekanbaru2222"), true},
-			{new Employee(100, "Robby2", "Pekanbaru3"), false}
+			{new Employee(100, "Robby2", "Pekanbaru3"), true}
 		});
 	}
 	

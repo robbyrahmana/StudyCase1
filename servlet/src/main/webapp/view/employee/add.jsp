@@ -25,15 +25,15 @@
 		</p:then>
 	</p:if>
 	
-	<form>
+	<form action="">
 		<div class="form-group">
 			<label for="name">Employee Name</label> 
-			<input type="text" class="form-control" id="name" name="name" placeholder="Enter name" />
+			<input type="text" class="form-control" id="name" name="name" placeholder="Enter name" value="${employees.name }" />
 		</div>
 
 		<div class="form-group">
 			<label for="name">Employee Address</label>
-			<textarea class="form-control" id="address" name="address" placeholder="Enter address"></textarea>
+			<textarea class="form-control" id="address" name="address" placeholder="Enter address">${employees.address }</textarea>
 		</div>
 
 		<input type="button" value="Save" class="btn btn-primary" onclick="doSubmit('save')"/> 

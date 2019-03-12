@@ -13,13 +13,13 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.mitrais.bean.Employee;
-import com.mitrais.service.EmployeeService;
-import com.mitrais.service.impl.EmployeeServiceImpl;
+import com.mitrais.dao.EmployeeDAO;
+import com.mitrais.dao.impl.EmployeeDAOImpl;
 
 @RunWith(Parameterized.class)
 public class SaveTest {
 	
-	private static EmployeeService service;
+	private static EmployeeDAO service;
 	
 	@Parameter
 	public Employee data;
@@ -39,7 +39,7 @@ public class SaveTest {
 	
 	@BeforeClass
 	public static void prepareService() {
-		service = EmployeeServiceImpl.getInstance();
+		service = EmployeeDAOImpl.getInstance();
 	}
 	
 	@Test

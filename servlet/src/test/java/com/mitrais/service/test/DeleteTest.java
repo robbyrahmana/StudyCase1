@@ -13,13 +13,13 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.mitrais.service.EmployeeService;
-import com.mitrais.service.impl.EmployeeServiceImpl;
+import com.mitrais.dao.EmployeeDAO;
+import com.mitrais.dao.impl.EmployeeDAOImpl;
 
 @RunWith(Parameterized.class)
 public class DeleteTest {
 	
-	private static EmployeeService service;
+	private static EmployeeDAO service;
 	
 	@Parameter
 	public int dataId;
@@ -31,13 +31,13 @@ public class DeleteTest {
 	public static Collection<Object[]> getData() {
 		return Arrays.asList(new Object[][] {
 			{ 1, true},
-			{200, false }
+			{200, true }
 		});
 	}
 	
 	@BeforeClass
 	public static void loadService() {
-		service = EmployeeServiceImpl.getInstance();
+		service = EmployeeDAOImpl.getInstance();
 	}
 	
 	@Test

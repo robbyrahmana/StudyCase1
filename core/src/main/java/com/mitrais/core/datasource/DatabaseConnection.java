@@ -10,19 +10,12 @@ import com.mitrais.core.helper.ReadPropertiesFiles;
 public class DatabaseConnection {
 
 	private static Connection instance;
+	private static Properties properties;
 
-	private DatabaseConnection() {
-	}
-
-	public static Connection getInstance(String propertiesFile) {
-		if (instance == null) {
-			instance = dataConnection(propertiesFile);
-		}
-		return instance;
-	}
-
-	private static Connection dataConnection(String propertiesFile) {
-		Properties properties = ReadPropertiesFiles.getInstance(propertiesFile);
+	private DatabaseConnection() {}
+	
+	static {
+		properties = ReadPropertiesFiles.getInstance("database.properties");	
 		
 		System.out.printf("Database Properties ========%n %-20s -> %s%n %-20s -> %s%n %-20s -> %s%n %-20s -> %s%n============================%n",
 				"database.driver", properties.getProperty("database.driver"),
@@ -30,19 +23,34 @@ public class DatabaseConnection {
 				"database.user", properties.getProperty("database.user"),
 				"database.password", properties.getProperty("database.password"));
 		
-		Connection connection = null;
 		try {
 			Class.forName(properties.getProperty("database.driver"));
-			connection = DriverManager.getConnection(
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}	
+	}
+
+	public static Connection getInstance() {
+		try {
+			if (instance == null || instance.isClosed()) {
+				dataConnection();
+			} 
+		} catch (SQLException e) {
+			System.out.println("Connection is not close");
+		}
+		return instance;
+	}
+
+	private static void dataConnection() {
+		System.out.println("Establish new connection");		
+		try {
+			instance = DriverManager.getConnection(
 					properties.getProperty("database.url"),
 					properties.getProperty("database.user"), 
 					properties.getProperty("database.password"));
-		} catch (ClassNotFoundException e) {
-			System.out.println("Unable to find driver " + e.getMessage());
 		} catch (SQLException e) {
 			System.out.println("Unable to create connection " + e.getMessage());
 		}
-		return connection;
 	}
 
 }

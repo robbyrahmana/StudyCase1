@@ -4,20 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DatabaseHandler {
+public class DatabaseHandler implements AutoCloseable {
 	
 	private static DatabaseHandler instance;
-	private static Connection connection;
+	private Connection connection;
+	private PreparedStatement preparedStatement;
 	
-	static {
-		connection = DatabaseConnection.getInstance("database.properties");
+	private DatabaseHandler() {
+		connection = DatabaseConnection.getInstance();
 	}
-	
-	
-	private DatabaseHandler() {}
 
 	public static DatabaseHandler getInstance() {
-		if (instance == null) {
+		if (instance == null || instance.isClose()) {
 			instance = new DatabaseHandler();
 		}
 		return instance;
@@ -25,13 +23,36 @@ public class DatabaseHandler {
 	
 	public PreparedStatement prepare(String query) {
 		System.out.printf("Starting execute query [%s]%n", query);
-		PreparedStatement preparedStatement = null;
+		
 		try {
 			preparedStatement = connection.prepareStatement(query);
 		} catch (SQLException e) {
 			System.out.println("Unable to execute query " + e.getMessage());
 		}
 		return preparedStatement;
+	}
+
+	@Override
+	public void close() {
+		try {
+			preparedStatement.close();
+			connection.close();
+		} catch (SQLException e) {
+			System.out.println("Unable to close connection");
+		}
+		System.out.println("Close connection");
+	}	
+	
+	private boolean isClose() {
+		boolean status = false;
+		try {
+			if (connection.isClosed()) {
+				status = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return status;
 	}
 	
 }
