@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.mitrais.service.test.DeleteTest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.172 s <<< FAILURE! - in com.mitrais.service.test.DeleteTest
-initializationError(com.mitrais.service.test.DeleteTest)  Time elapsed: 0.009 s  <<< ERROR!
-java.lang.NoClassDefFoundError: LEmployeeDAO;
-Caused by: java.lang.ClassNotFoundException: EmployeeDAO
-
